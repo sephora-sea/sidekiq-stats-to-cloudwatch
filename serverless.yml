@@ -1,0 +1,61 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: sidekiq-stats-to-cloudwatch # NOTE: update this with your service name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+frameworkVersion: ">=1.28.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: go1.x
+  memorySize: 128
+  timeout: 120
+  region: ap-southeast-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - cloudwatch:PutMetricData
+        - lambda:InvokeFunction
+      Resource: "*"
+  vpc:
+    securityGroupIds:
+      - sg-ce6d87a8
+    subnetIds:
+      - subnet-9b4988fc
+      - subnet-9dd82cd4
+
+package:
+ exclude:
+   - ./**
+ include:
+   - ./bin/**
+
+functions:
+  main:
+    handler: bin/main
+    environment: ${file(${opt:stage}.yml)}
+    tags:
+      Name: OMS Sidekiq Queue Length to Cloudwatch
+      Environment: production
+      Application: OMS Sidekiq Queue Length to Cloudwatch
+      Portfolio: ERP
+      Owner: kcsim@sephora.sg
+      Security: low
+      Confidentiality: low
+    events:
+      - schedule:
+          rate: rate(5 minutes)
+          enabled: true
