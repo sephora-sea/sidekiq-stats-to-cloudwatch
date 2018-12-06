@@ -7,9 +7,9 @@ import (
 )
 
 type Config struct {
-	APIKey    string `env:"API_KEY"`
-	AWSRegion string `env:"AWS_REGION" envDefault:"ap-southeast-1"`
-	AppName   string `env:"APP_NAME" envDefault:"nameless app"`
+	SidekiqStatsURL string `env:"SIDEKIQ_STATS_URL"`
+	AWSRegion       string `env:"AWS_REGION" envDefault:"ap-southeast-1"`
+	AppName         string `env:"APP_NAME" envDefault:"nameless app"`
 }
 
 var instance *Config

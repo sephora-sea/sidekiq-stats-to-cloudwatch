@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -138,14 +137,13 @@ func putDimensionedMetric(cloudwatchSvc *cloudwatch.CloudWatch, attribute, unit 
 }
 
 func getResult(target *QueueLengthResponse) (err error) {
-	url := fmt.Sprintf("https://wms.luxola.com/api/v1/sidekiq?Token=%s", config.GetInstance().APIKey)
-	r, err := myClient.Get(url)
+	response, err := myClient.Get(config.GetInstance().SidekiqStatsURL)
 	if err != nil {
 		return
 	}
-	defer r.Body.Close()
 
-	json.NewDecoder(r.Body).Decode(target)
+	defer response.Body.Close()
+	json.NewDecoder(response.Body).Decode(target)
 
 	return
 }
