@@ -43,8 +43,8 @@ dep ensure
  Name | Required | Default | Description |
 |------|----------|---------|-------------|
 | `SIDEKIQ_STATS_URL` | y | `-` | Sidekiq queue length endpoint to poll against  |
-| `AWSRegion` | y | `ap-southeast-1` | AWS Region where Cloudwatch Metrics are stored  |
-| `AppName` | n | `-` | Used to namespace Cloudwatch Metrics  |
+| `AWS_REGION` | y | `ap-southeast-1` | AWS Region where Cloudwatch Metrics are stored  |
+| `APP_NAME` | n | `-` | Used to namespace Cloudwatch Metrics  |
 
 ## Deploy
 
